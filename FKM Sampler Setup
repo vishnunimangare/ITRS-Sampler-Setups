@@ -1,0 +1,55 @@
+🚨 **Monitoring Logs Smarter with ITRS Geneos – File Keyword Monitor (FKM)**
+As an **Application Support / Production Support Engineer**, proactive application monitoring is critical for identifying issues early and minimizing business impact.
+One effective way to achieve this is by using the "File Keyword Monitor (FKM)" plugin in ITRS Geneos.
+Recently, I configured an FKM sampler to continuously monitor application log files and detect important error patterns such as 'ERROR, Exception, Failed', and other application-specific keywords.
+🧩 What does FKM do?
+The File Keyword Monitor (FKM) continuously monitors configured log files and raises alerts when defined keywords or regular expressions are detected—helping support teams identify issues without constantly monitoring logs manually.
+### ⚙️ FKM Configuration – Step by Step
+Step 1. Open Active Console (Gateway Setup Editor)
+Connect to your Geneos Gateway.
+Right-click the Managed Entity where you want the FKM to run.
+Click 'New Sampler'.
+
+Step 2. Create a New Sampler for FKM
+Name: 'log_monitor_fkm' (or anything relevant)
+Sample Interval: 20 seconds (default, can be changed based on monitoring requirements)
+Plugin: 'FKM'
+Click: OK.
+
+Step 3. Configure the FKM Plugin
+Inside the Sampler just created:
+A. Add File to Monitor
+Click 'Add' under the Files section.
+Set:
+Path: '/var/log/app/app.log'
+(Adjust to your log file location.)
+File Filter: Optional, e.g. '*.log' if you monitor multiple files.
+Type: Simple or Multiline depending on the log structure.
+B. Add Rules (Keywords)
+Under Rules, click 'Add' to define keywords or regex to match.
+Example Rule:
+Pattern: 'ERROR|Exception|Failed'
+Case Sensitive: 'false'
+Trigger Level: 'Warning' or 'Critical'
+Row Type: 'Active' or 'Passive'
+(Active keeps alerting until cleared.)
+
+Step 4. Deploy and Test
+Save the Gateway Setup.
+Restart the sampler or refresh.
+Check the 'Active Console' for your FKM table.
+Simulate a log entry such as:
+'ERROR: Connection failed'
+and verify that the expected alert is triggered.
+
+Why use FKM?
+✅ Detect application issues early
+✅ Reduce manual log monitoring
+✅ Provide proactive alerting
+✅ Monitor multiple application log files
+✅ Support keyword and pattern-based detection
+✅ Improve incident response time
+✅ Reduce the need for custom monitoring scripts
+For "Application Support, Production Support, DevOps, and SRE teams", FKM can be a simple yet powerful approach to proactive application and log monitoring.
+🚀 Monitor proactively. Detect early. Respond faster.
+#ITRS #Geneos #FKM #FileKeywordMonitor #ApplicationSupport #ProductionSupport #LogMonitoring #Monitoring #Observability #DevOps #SRE #IncidentManagement #Alerting #Automation
