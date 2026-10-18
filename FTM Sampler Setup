@@ -1,0 +1,147 @@
+ITRS Geneos FTM | File Arrival Monitoring on Unix
+
+In production support, one common issue is a file not arriving within the expected time.
+
+For example, a payment or report file is expected on a Unix server every day at 10:00 AM. If the file is delayed, the support team should be alerted before downstream processing is impacted.
+
+This is where the ITRS Geneos File Transfer Monitor, or FTM, can help.
+
+FTM monitors expected file arrivals and checks whether the file is received within the configured time.
+
+It supports:
+
+✅ Expected arrival time  
+✅ Daily, weekly, and monthly file schedules  
+✅ Monitoring periods  
+✅ Specific monitored days  
+✅ Holidays  
+✅ Late file detection  
+✅ Warning or amber status for delayed files  
+✅ Critical or red status after the drop-dead time  
+
+Example setup:
+
+Unix server: `appserver01`
+
+File:
+/app/inbound/payment_<today>.dat
+
+Expected arrival:
+10:00:00
+
+Frequency:
+Daily
+
+Monitoring flow:
+
+Unix Server
+     |
+     | Expected file
+     v
+/app/inbound/payment_<today>.dat
+     |
+     v
+Geneos Netprobe
+     |
+     v
+FTM Sampler
+     |
+     v
+Check expected arrival
+     |
+     +-- File received on time → OK
+     |
+     +-- File received late → WARNING / AMBER
+     |
+     +-- File not received after drop-dead time → CRITICAL / RED
+
+Basic FTM setup in Geneos Active Console:
+
+Gateway Setup Editor
+   |
+   +-- Samplers
+         |
+         +-- New Sampler
+               |
+               +-- Plugin = FTM
+
+Example sampler configuration:
+Name:
+payment_file_monitor
+
+Group:
+FileMonitoring
+
+Description:
+Monitor daily payment file
+
+Sample interval:
+20 seconds
+
+Under the FTM Basic configuration, add the file path and expected schedule:
+
+Path:
+/app/inbound/payment_<today>.dat
+
+Expected arrival:
+10:00:00
+
+Expected period:
+Daily
+
+FTM uses the expected arrival time and expected period to determine whether the file has arrived on time.
+
+You can also configure the monitoring period, for example:
+
+Noon_to_noon
+Midnight_to_midnight
+
+Specific monitored days can also be configured when the file is expected only on business days:
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+
+Example scenario:
+
+The file is expected at 10:00 AM.
+
+At 10:10 AM:
+
+Status: WARNING / AMBER
+Expected: 10:00 AM
+Actual: Not received
+
+If the file is still missing after the configured drop-dead time:
+
+Status: CRITICAL / RED
+
+Payment file has not been received
+after the expected drop-dead time.
+
+One important prerequisite is that the Netprobe user must have read access to the monitored file and directory.
+
+You can verify the permissions on Unix with:
+
+ls -l /app/inbound/payment_20261007.dat
+
+FTM can be used for monitoring:
+
+📌 Payment files  
+📌 SWIFT-related files  
+📌 Reconciliation files  
+📌 Settlement reports  
+📌 End-of-day reports  
+📌 Upstream and downstream interface files  
+📌 Batch processing input and output files  
+
+Instead of waiting for a business user to report that a file has not arrived, Geneos can detect the delay and alert the support team.
+
+Monitor file arrival → Detect delay → Alert support → Investigate the issue → Reduce business impact
+
+Reference: ITRS Geneos 7.1 File Transfer Monitor documentation
+
+https://docs.itrsgroup.com/docs/geneos/7.1.0/collection/ftm/index.html
+
+#ITRSGeneos #Geneos #FTM #FileTransferMonitor #ApplicationSupport #ProductionSupport #Unix #Monitoring #SRE #DevOps #Observability #BankingTechnology #Payments #IncidentManagement
